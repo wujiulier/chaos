@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('./assets/font/Roboto/Roboto-Black.ttf') format('ttf');
+       /* url('./assets/fonts/my-custom-font.woff') format('woff'); */
+  font-weight: normal;
+  font-style: normal;
+}

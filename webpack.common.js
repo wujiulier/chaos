@@ -60,13 +60,27 @@ module.exports = {
             // 'style-loader', 
             'css-loader', 'sass-loader'],
       },
+      // {
+      //   test: /\.svg$/,
+      //   issuer: /\.[jt]sx?$/, // 仅在 JS/TS 文件中处理 @svgr/webpack
+      //   use: ['@svgr/webpack'],
+      // },
+      // {
+      //   test: /\.svg$/,
+      //   type: 'asset/resource',
+      //   generator: {
+      //       filename: 'images/[name].[hash][ext][query]'
+      //   },
+      // },
       {
         test: /\.svg$/,
-        // use: ['@svgr/webpack','file-loader'],
-        type: 'asset/resource',
-        generator: {
-            filename: 'images/[name].[hash][ext][query]'
-        }
+        use: ['@svgr/webpack','file-loader'],
+
+        // svg 提取到单独的 文件列表下
+        // type: 'asset/resource',
+        // generator: {
+        //     filename: 'images/[name].[hash][ext][query]'
+        // }
       },
       {
         test: /\.(png|jpe?g|gif)$/i,

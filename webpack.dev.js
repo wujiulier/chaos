@@ -29,9 +29,9 @@ module.exports = merge(common,{
     open: true,
     client: {
         overlay: true,
-        webSocketURL: 'auto://0.0.0.0:0/ws', // 确保客户端配置正确
+        // webSocketURL: 'auto://0.0.0.0:0/ws', // 确保客户端配置正确
       },
-      allowedHosts: 'all', // 允许所有主机访问
+      // allowedHosts: 'all', // 允许所有主机访问
   },
   devtool: 'source-map'
 });
