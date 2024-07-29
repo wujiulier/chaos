@@ -36,11 +36,15 @@ export default defineConfig({
   output: {
     injectStyles: false,
     dataUriLimit: 0,
+     assetPrefix: '/ts-demo/',
     distPath: {
       svg: 'svg'
     },
     sourceMap: {
       js: 'source-map'
     }
+  },
+  server: {
+    open: true,
   }
 })
