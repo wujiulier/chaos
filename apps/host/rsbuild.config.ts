@@ -46,5 +46,23 @@ export default defineConfig({
   },
   server: {
     open: true,
+  },
+  tools: {
+    postcss: {
+      postcssOptions: {
+        plugins: [
+          require('postcss-prefix-selector')({
+            prefix: '.namespace', // 用你想要的 namespace 替换 .namespace
+            transform (prefix, selector, prefixedSelector, file) {
+              // 你可以在这里添加更复杂的转换逻辑
+              if (selector.startsWith('body')) {
+                return selector.replace(/^body/, 'body' + prefix);
+              }
+              return prefixedSelector;
+            }
+          })
+        ]
+      },
+    }
   }
 })
