@@ -34,6 +34,9 @@ jobs:
 
       # 如果你使用其他的包管理器，如 yarn 或 pnpm，
       # 你需要先安装它们
+      - name: Install turbo
+        run: npm install -g turbo
+      
       - name: Install dependencies
         run: npx pnpm install
 
