@@ -1,5 +1,5 @@
 {
-  "name": "host",
+  "name": "remote",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,7 @@
     "start:webpack:express": "node scripts/server.js",
     "start:rsbuild": "rsbuild dev",
     "build": "tsc",
-    "build:webpack": "webpack --config webpack.build.js",
-    "build:rsbuild": "rsbuild build",
-    "build:rollup": "rollup -c"
+    "build:webpack": "webpack --config webpack.build.js"
   },
   "author": "",
   "license": "ISC",
