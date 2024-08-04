@@ -6,7 +6,9 @@ interface ButtonProps {
     onClick?: (e:any) => void;
 }
 const Button:FC<ButtonProps> = ({ text,onClick }) => {
-    return <div id='button' onClick={onClick}>{text}</div>
+    return <div>
+        <div id='button' onClick={onClick}>{text}</div>
+    </div>
 };
 
 export default Button;

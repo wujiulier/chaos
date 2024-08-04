@@ -1,6 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const webpack = require('/Users/young/Code/webpack/lib/index');
+const MyCustomWebpackPlugin = require('./webpack-debug-plugin');
+
 
 module.exports = {
   output: {
@@ -11,6 +15,11 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: path.resolve(__dirname, './tsconfig.json')
+      })
+    ]
   },
   module: {
     rules: [
@@ -100,8 +109,13 @@ module.exports = {
     ]
   },
   plugins: [
+    new MyCustomWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './public/index.html'
+      template: './public/index.ejs',
+      inject: 'body',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     }),
     new MiniCssExtractPlugin({
         filename: 'css/[name].[contenthash].css',
