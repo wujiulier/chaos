@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .parent {
+            width: 200px;
+            height: 200px;
+            border: 1px solid red;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .child {
+            width: 50px;
+            height: 50px;
+            border: 1px solid blue;
+            position: relative;
+            top: -50px;
+        }
+    </style>
+    <style>
+        .case2 {
+            height: 500px;
+            widht: 500px;
+            border: 1px solid yellow;
+            display: flex;
+            flex-direction: column;
+
+
+            .top {
+                width: 100%;
+                height: 50px;
+                border: 1px solid red;
+            }
+
+            .content {
+                flex: 1;
+                display: flex;
+            }
+
+            .left {
+                width: 50px;
+                height: 100%;
+                border: 1px solid blue;
+            }
+
+            .right {
+                flex: 1;
+                height: 100%;
+                border: 1px solid green;
+            }
+
+            .bottom {
+                width: 100%;
+                height: 50px;
+                border: 1px solid green;
+            }
+        }
+
+        .case3 {
+            height: 500px;
+            widht: 500px;
+            border: 1px solid yellow;
+            display: grid;
+            grid-template-rows: 100px auto 100px;
+
+
+            .top {
+                width: 100%;
+                border: 1px solid red;
+            }
+
+            .content {
+                flex: 1;
+                display: grid;
+                grid-template-columns: 100px auto
+            }
+
+            .left {
+                height: 100%;
+                border: 1px solid blue;
+            }
+
+            .right {
+                flex: 1;
+                height: 100%;
+                border: 1px solid green;
+            }
+
+            .bottom {
+                width: 100%;
+                border: 1px solid green;
+            }
+        }
+    </style>
+    <!-- <script defer>
+        const containerEle = document.getElementById("container");
+        console.log(containerEle,document);
+    </script> -->
+</head>
+
+<body>
+    <div class="parent">
+        <div class="child">子</div>
+    </div>
+    <div class="case2">
+        <div class="top">顶部</div>
+        <div class="content">
+            <div class="left">左</div>
+            <div class="right">右</div>
+        </div>
+        <div class="bottom">底部</div>
+    </div>
+    <div class="case3">
+        <div class="top">顶部</div>
+        <div class="content">
+            <div class="left">左</div>
+            <div class="right">右</div>
+        </div>
+        <div class="bottom">底部</div>
+    </div>
+    <div id="container">
+        <img />
+        <div>
+            <img />
+            <div>
+                <img />
+                <div>
+                    <img>
+                    <img></img>
+                    </img>
+                </div>
+            </div>
+        </div>
+        <div>
+            <img />
+            <div>
+                <img />
+            </div>
+        </div>
+    </div>
+    <div id="xss"></div>
+    <script>
+        const xssEle = document.getElementById('xss');
+        const script = doucment.createElement('script');
+
+        script.innerHTML = '<script>这是一个函数 <alert>弹框内容</alert><\/script>';
+        xssEle.appendChild(script);
+    
+    </script>
+    <script defer>
+        const containerEle = document.getElementById("container");
+        const imgs = [];
+        const findImgs = (node, level) => {
+            if(node.tagName === 'IMG' && level> 3){
+                imgs.push(node);
+                return;
+            }
+
+            if(!node?.children?.length){
+                return;
+            }
+
+            for(let i=0;i<node.children.length;i++){
+                findImgs(node.children[i],level++);
+            }
+        };
+        findImgs(containerEle,0)
+
+        console.log(imgs);
+    </script>
+    <script>
+        function packPromise(promise){
+            return promise.then(() => 1).catch(() => 0);
+        } 
+        Promise.all([packPromise(new Promise((resolve,reject) => {
+            setTimeout(() => {
+                resolve(9)
+            },3*1000)
+        })),packPromise(new Promise((resolve,reject) => {
+            setTimeout(() => {
+                reject(3)
+            },3*1000)
+        })),packPromise(new Promise((resolve,reject) => {
+            setTimeout(() => {
+                reject(7)
+            },3*1000)
+        }))]).then(res => {
+            console.log(res);
+        })
+    </script>
+   
+</body>
+
+</html>
