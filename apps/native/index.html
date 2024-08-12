@@ -3,6 +3,36 @@
 
 <head>
     <style>
+        .active {
+            color: red;
+        }
+    </style>
+    <style>
+        .container-bfc {
+            .bfc-parent {
+                background-color: lightgray;
+                margin-bottom: 50px;
+            }
+
+            .bfc-child {
+                background-color: lightblue;
+                margin-top: 30px;
+            }
+        }
+        .container-float {
+            .float-left {
+                background-color: lightgray;
+                width: 200px;
+                float: left;
+            }
+
+            .float-right {
+                background-color: lightblue;
+                margin-left: 200px;
+            }
+        }
+    </style>
+    <style>
         .parent {
             width: 200px;
             height: 200px;
@@ -103,6 +133,20 @@
 </head>
 
 <body>
+    <ul id="parent">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+    </ul>
+    <div class="container-float">
+        <div class="float-left">Left Column</div>
+        <div class="float-right">Right Column</div>
+      </div>
+    <div class="container-bfc">
+        <div class="bfc-parent">Parent</div>
+        <div class="bfc-child">Child</div>
+    </div>
     <div class="parent">
         <div class="child">子</div>
     </div>
@@ -144,55 +188,114 @@
     </div>
     <div id="xss"></div>
     <script>
+        (() => {
+            const delegate = (parent,selector,type,handle) => {
+
+                parent.addEventListener(type, e => {
+                    let el = e.target
+
+                    while(!el.localName === selector){
+                        if(el === parent){
+                            el = null;
+                            break;
+                        }
+
+                        el = el.parentElement
+                    }
+
+                    if(el){
+                        handle.apply(el)
+                    }
+                })
+
+
+            }
+
+            function changeColor () {
+                if(this.classList.contains('active')){
+                    this.classList.remove('active')
+                }else{
+                    this.classList.add('active');
+                }
+            }
+
+            const parent = document.getElementById("parent");
+
+            delegate(parent,"li","click",changeColor)
+        })()
+    </script>
+    <script>
         const xssEle = document.getElementById('xss');
         const script = doucment.createElement('script');
 
         script.innerHTML = '<script>这是一个函数 <alert>弹框内容</alert><\/script>';
         xssEle.appendChild(script);
-    
+
     </script>
     <script defer>
         const containerEle = document.getElementById("container");
         const imgs = [];
         const findImgs = (node, level) => {
-            if(node.tagName === 'IMG' && level> 3){
+            if (node.tagName === 'IMG' && level > 3) {
                 imgs.push(node);
                 return;
             }
 
-            if(!node?.children?.length){
+            if (!node?.children?.length) {
                 return;
             }
 
-            for(let i=0;i<node.children.length;i++){
-                findImgs(node.children[i],level++);
+            for (let i = 0; i < node.children.length; i++) {
+                findImgs(node.children[i], level++);
             }
         };
-        findImgs(containerEle,0)
+        findImgs(containerEle, 0)
 
-        console.log(imgs);
+        // console.log(imgs);
     </script>
     <script>
-        function packPromise(promise){
+        function packPromise(promise) {
             return promise.then(() => 1).catch(() => 0);
-        } 
-        Promise.all([packPromise(new Promise((resolve,reject) => {
+        }
+        Promise.all([packPromise(new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve(9)
-            },3*1000)
-        })),packPromise(new Promise((resolve,reject) => {
+            }, 3 * 1000)
+        })), packPromise(new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject(3)
-            },3*1000)
-        })),packPromise(new Promise((resolve,reject) => {
+            }, 3 * 1000)
+        })), packPromise(new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject(7)
-            },3*1000)
+            }, 3 * 1000)
         }))]).then(res => {
-            console.log(res);
+            // console.log(res);
         })
     </script>
-   
+    <script>
+        function createBind(){
+            console.log('哈哈哈哈哈');
+        }
+
+        function MyPerson(name,age){
+            this.name = name;
+            this.age = age;
+        }
+
+        MyPerson.prototype.getName = () => {
+            return this.name;
+        }
+
+        MyPerson.getAge = () => {
+            console.log('this',this);
+            return this.age;
+        };
+
+        const mys = new MyPerson('小黑',16);
+        console.log(createBind,createBind.__proto__);
+    </script>
+
 </body>
 
 </html>

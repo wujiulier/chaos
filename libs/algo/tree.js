@@ -136,6 +136,6 @@ function bfsIterative(node){
 
 // preIterative(root);
 // inorderIterative(root);
-// postorderIterative(root);
+postorderIterative(root);
 // dfsIterative(root);
-bfsIterative(root);
+// bfsIterative(root);
